@@ -2,11 +2,11 @@ from typing import Optional, Tuple
 
 from gradio_rangeslider import RangeSlider
 
-from facefusion import state_manager, wording
-from facefusion.face_store import clear_static_faces
+from facefusion import state_manager, translator
+from facefusion.face_store import clear_faces
 from facefusion.filesystem import is_video
 from facefusion.uis.core import get_ui_components
-from facefusion.uis.typing import ComponentOptions
+from facefusion.uis.types import ComponentOptions
 from facefusion.vision import count_video_frame_total
 
 TRIM_FRAME_RANGE_SLIDER : Optional[RangeSlider] = None
@@ -17,7 +17,7 @@ def render() -> None:
 
 	trim_frame_range_slider_options : ComponentOptions =\
 	{
-		'label': wording.get('uis.trim_frame_slider'),
+		'label': translator.get('uis.trim_frame_slider'),
 		'minimum': 0,
 		'step': 1,
 		'visible': False
@@ -39,7 +39,7 @@ def listen() -> None:
 		'target_image',
 		'target_video'
 	]):
-		for method in [ 'upload', 'change', 'clear' ]:
+		for method in [ 'change', 'clear' ]:
 			getattr(ui_component, method)(remote_update, outputs = [ TRIM_FRAME_RANGE_SLIDER ])
 
 
@@ -53,7 +53,7 @@ def remote_update() -> RangeSlider:
 
 
 def update_trim_frame(trim_frame : Tuple[float, float]) -> None:
-	clear_static_faces()
+	clear_faces()
 	trim_frame_start, trim_frame_end = trim_frame
 	video_frame_total = count_video_frame_total(state_manager.get_item('target_path'))
 	trim_frame_start = int(trim_frame_start) if trim_frame_start > 0 else None

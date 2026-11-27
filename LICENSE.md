@@ -1,3 +1,3 @@
-MIT license
+OpenRAIL-AS license
 
-Copyright (c) 2024 Henry Ruhs
+Copyright (c) 2026 Henry Ruhs
